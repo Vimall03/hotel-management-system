@@ -11,6 +11,112 @@
   --header-font: "Playfair Display", serif;
 }
 
+/* General Styles */
+
+.booking-form-container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  overflow: hidden;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #f6ac0f;
+  padding-bottom: 0.5rem;
+}
+
+.form-section {
+  display: none;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.form-section.active {
+  display: block;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #0f172a;
+  background-color: #f8fafc;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus {
+  border-color: #f6ac0f;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(246, 172, 15, 0.2);
+}
+
+.next-btn, .prev-btn, .submit-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.next-btn, .submit-btn {
+  background-color: #f6ac0f;
+  color: #ffffff;
+}
+
+.prev-btn {
+  background-color: #e2e8f0;
+  color: #0f172a;
+  margin-right: 1rem;
+}
+
+.next-btn:hover, .submit-btn:hover {
+  background-color: #e69900;
+  transform: translateY(-2px);
+}
+
+.prev-btn:hover {
+  background-color: #cbd5e1;
+  transform: translateY(-2px);
+}
+
+.next-btn:active, .prev-btn:active, .submit-btn:active {
+  transform: translateY(0);
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -33,6 +139,7 @@
 .section__header {
   font-size: 3rem;
   font-weight: 800;
+  text-align: left;
   font-family: var(--header-font);
   color: var(--text-dark);
 }
@@ -819,6 +926,11 @@ h1 {
 
 .form-group {
   margin-bottom: 20px;
+}
+
+.form-button-group{
+  display: flex;
+  justify-content: space-between;
 }
 
 label {

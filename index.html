@@ -8,6 +8,44 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* CSS */
+  
+      .booking-form-container {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+      }
+  
+      .form-section {
+        position: absolute;
+        width: 100%;
+        padding: 0 20px;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease-in-out;
+        pointer-events: none;
+      }
+  
+      .form-section.active {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: all;
+        position: relative;
+      }
+  
+      .form-section.exit {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+  
+      /* Other styles remain the same as previous CSS */
+    </style>
     <title>Welcome to HOTEL BLACK DIAMOND</title>
   </head>
   <body>
@@ -94,7 +132,7 @@
             explore a subterranean world of wonders.
           </p>
           
-          <form id="bookingForm" onsubmit="return validateForm()">
+          <!-- <form id="bookingForm" onsubmit="return validateForm()">
             <div class="form-group">
                 <label for="name">Full Name:</label>
                 <input type="text" id="name" name="name" required>
@@ -129,7 +167,63 @@
                 <input type="number" id="guests" name="guests" min="1" required>
             </div>
             <button type="submit" class="btn">Book Now</button>
-          </form>
+          </form> -->
+        
+            <div class="booking-form-container">
+              <h2>Book Your Stay</h2>
+              <form id="bookingForm" onsubmit="return submitForm(event)">
+                <!-- Personal Details Section -->
+                <div class="form-section active" id="personalDetails">
+                  <h3>Personal Details</h3>
+                  <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                  </div>
+                  <button type="button" class="next-btn" onclick="nextSection('bookingDetails')">Next</button>
+                </div>
+          
+                <!-- Booking Details Section -->
+                <div class="form-section" id="bookingDetails">
+                  <h3>Booking Details</h3>
+                  <div class="form-button-group" style="margin-bottom: 1rem;">
+                    <div style="width: 100%; padding-right: 10px;">
+                      <label for="checkin">Check-in Date</label>
+                      <input type="date" id="checkin" name="checkin" required>
+                    </div>
+                    <div style="width: 100%; padding-left: 10px;">
+                      <label for="checkout">Check-out Date</label>
+                      <input type="date" id="checkout" name="checkout" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="roomType">Room Type</label>
+                    <select id="roomType" name="roomType" required>
+                      <option value="">Select Room Type</option>
+                      <option value="single">Single</option>
+                      <option value="double">Double</option>
+                      <option value="suite">Suite</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="guests">Number of Guests</label>
+                    <input type="number" id="guests" name="guests" min="1" placeholder="Enter number of guests" required>
+                  </div>
+                  <div class="form-button-group">
+                    <button type="button" class="prev-btn" onclick="prevSection('personalDetails')">Previous</button>
+                    <button type="submit" class="submit-btn">Submit</button>
+                  </div>
+                
+                </div>
+              </form>
+            </div>
         </div>
       </div>
     </section>
@@ -474,5 +568,108 @@
 
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="main.js"></script>
+    <script>
+      // JavaScript
+      let currentSection = 'personalDetails';
+  
+      function nextSection(nextSectionId) {
+        const currentEl = document.getElementById(currentSection);
+        const nextEl = document.getElementById(nextSectionId);
+        
+        if (!validateSection(currentSection)) return;
+        
+        currentEl.classList.add('exit');
+        setTimeout(() => {
+          currentEl.classList.remove('active', 'exit');
+          nextEl.classList.add('active');
+          currentSection = nextSectionId;
+        }, 300);
+      }
+  
+      function prevSection(prevSectionId) {
+        const currentEl = document.getElementById(currentSection);
+        const prevEl = document.getElementById(prevSectionId);
+        
+        currentEl.classList.add('exit');
+        setTimeout(() => {
+          currentEl.classList.remove('active', 'exit');
+          prevEl.classList.add('active');
+          currentSection = prevSectionId;
+        }, 300);
+      }
+  
+      function validateSection(sectionId) {
+        const inputs = document.querySelectorAll(`#${sectionId} input, #${sectionId} select`);
+        let isValid = true;
+        
+        inputs.forEach(input => {
+          if (!input.checkValidity()) {
+            input.reportValidity();
+            isValid = false;
+          }
+        });
+        
+        return isValid;
+      }
+  
+      function submitForm(event) {
+        event.preventDefault();
+        if (validateSection(currentSection)) {
+          const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const checkin = document.getElementById('checkin').value;
+      const checkout = document.getElementById('checkout').value;
+      const roomType = document.getElementById('roomType').value;
+      const guests = document.getElementById('guests').value;
+    
+      let errorMessage = '';
+    
+      // Validate all fields
+      if (!name || !email || !phone || !checkin || !checkout || !roomType || !guests) {
+        errorMessage = 'All fields are required!';
+      }
+    
+      // Validate check-in and check-out dates
+      if (new Date(checkout) <= new Date(checkin)) {
+        errorMessage = 'Check-out date must be after check-in date.';
+      }
+    
+      if (errorMessage) {
+        alert(errorMessage);
+        return false;
+      }
+    
+      // Simulate form submission
+      fetch('http://localhost:5678/webhook/bc91c7eb-3d04-46a6-a35a-5cb77e96d302', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          checkin,
+          checkout,
+          roomType,
+          guests,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data);
+          alert('Booking successful!');
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        });
+    
+      return true;
+          alert('Form submitted successfully!');
+        }
+      }
+    </script>
   </body>
 </html>
